@@ -119,7 +119,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $action) {
 
 } else {
     // GET: ดึงข้อมูลสินค้า
-    $stmt = $conn->prepare("SELECT * FROM products ORDER BY product_id ASC");
+    $stmt = $conn->prepare("SELECT * FROM products ORDER BY product_id DESC");
     if ($stmt->execute()) {
         $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
         echo json_encode(["success" => true, "data" => $products]);
