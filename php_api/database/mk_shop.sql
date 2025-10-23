@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 22, 2025 at 06:57 PM
+-- Generation Time: Oct 23, 2025 at 05:10 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.1.25
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `db_shop`
+-- Database: `mk_shop`
 --
 
 -- --------------------------------------------------------
@@ -39,33 +39,6 @@ CREATE TABLE `admin` (
 
 INSERT INTO `admin` (`id`, `username`, `password`) VALUES
 (1, 'admin', '1234');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `customers`
---
-
-CREATE TABLE `customers` (
-  `customer_id` int(11) NOT NULL,
-  `firstName` varchar(50) NOT NULL,
-  `lastName` varchar(50) NOT NULL,
-  `phone` varchar(15) NOT NULL,
-  `username` varchar(20) NOT NULL,
-  `password` varchar(128) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `customers`
---
-
-INSERT INTO `customers` (`customer_id`, `firstName`, `lastName`, `phone`, `username`, `password`) VALUES
-(36, 'มานะ', 'ใจดี', '03874369', 'mana', '$2y$10$aKsKBq6skVkCWUALjKUr0u0LTqhO07kRtECcReV8KR.33XMlWQqDG'),
-(37, 'มะลิร้ตน์', 'เกิดดี', '038743910', 'mali', '$2y$10$TFuV2F6DzYJC.NI6i3hbv.M2QpAPYzkVhuwNL7YwzPccGxDZvj.da'),
-(40, 'เมษา', 'เด็กดี', '038745260', 'mesa', '$2y$10$qc8K6WsN0Uvvjk1ggaiWqOrs6z/XepMP6/NnaNgJdDH0709ha8BgC'),
-(44, 'สมศรี', 'บุญมาก', '0389759810', 'somchi', '$2y$10$FZ1fzmwD81ic0FoRGgAnPuX9UEyILfVaQ03lguhSOfFmcmUXMMI5W'),
-(47, 'AAA', 'BBB', '038743691', 'AAA', '$2y$10$iPT3FRIlJP/uPhyta9ynieEXjFMRFlIo4N/iiWvOzyn8m1B8I6KRK'),
-(48, 'เมษา', 'เด็กดี', '038743690', 'mesa', '$2y$10$8ejhxNhpF9i4/fXBtKDTrOCVlD6yB/hGGJW7kseu4V5feYMgWnqr6');
 
 -- --------------------------------------------------------
 
@@ -99,7 +72,10 @@ INSERT INTO `orders` (`id`, `table_no`, `total_price`, `order_date`, `status`) V
 (21, '5', 0.00, '2025-10-22 21:40:06', 'เสร็จแล้ว'),
 (22, '1', 0.00, '2025-10-22 22:28:16', 'เสร็จแล้ว'),
 (26, '2', 0.00, '2025-10-22 23:33:51', 'เสร็จแล้ว'),
-(27, '4', 0.00, '2025-10-22 23:53:24', 'เสร็จแล้ว');
+(27, '4', 0.00, '2025-10-22 23:53:24', 'เสร็จแล้ว'),
+(28, '2', 0.00, '2025-10-23 08:52:04', 'เสร็จแล้ว'),
+(29, '1', 0.00, '2025-10-23 09:35:12', 'เสร็จแล้ว'),
+(30, '4', 0.00, '2025-10-23 10:07:16', 'เสร็จแล้ว');
 
 -- --------------------------------------------------------
 
@@ -132,7 +108,6 @@ INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `quantity`, `price`, 
 (17, 12, 9, 2, 250.00, 500.00, 'เสร็จแล้ว'),
 (20, 14, 14, 2, 299.00, 598.00, 'เสร็จแล้ว'),
 (21, 14, 13, 2, 250.00, 500.00, 'เสร็จแล้ว'),
-(26, 16, 7, 1, 28000.00, 28000.00, 'เสร็จแล้ว'),
 (27, 16, 8, 3, 280.00, 840.00, 'เสร็จแล้ว'),
 (28, 16, 17, 3, 299.00, 897.00, 'เสร็จแล้ว'),
 (29, 17, 9, 4, 250.00, 1000.00, 'เสร็จแล้ว'),
@@ -153,24 +128,14 @@ INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `quantity`, `price`, 
 (44, 22, 9, 1, 250.00, 250.00, 'เสร็จแล้ว'),
 (45, 22, 10, 1, 199.00, 199.00, 'เสร็จแล้ว'),
 (56, 26, 9, 2, 250.00, 500.00, 'เสร็จแล้ว'),
-(57, 26, 13, 2, 250.00, 500.00, 'เสร็จแล้ว'),
 (60, 27, 13, 3, 250.00, 750.00, 'เสร็จแล้ว'),
-(61, 27, 14, 2, 299.00, 598.00, 'เสร็จแล้ว');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `payments`
---
-
-CREATE TABLE `payments` (
-  `payment_id` int(11) NOT NULL,
-  `order_id` int(11) NOT NULL,
-  `payment_date` timestamp NOT NULL DEFAULT current_timestamp(),
-  `amount` decimal(10,2) NOT NULL,
-  `method` varchar(50) NOT NULL,
-  `status` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+(61, 27, 14, 2, 299.00, 598.00, 'เสร็จแล้ว'),
+(62, 28, 9, 2, 250.00, 500.00, 'เสร็จแล้ว'),
+(63, 28, 10, 2, 199.00, 398.00, 'เสร็จแล้ว'),
+(64, 29, 9, 2, 250.00, 500.00, 'เสร็จแล้ว'),
+(66, 29, 14, 2, 299.00, 598.00, 'เสร็จแล้ว'),
+(67, 30, 8, 2, 280.00, 560.00, 'เสร็จแล้ว'),
+(68, 30, 9, 2, 250.00, 500.00, 'เสร็จแล้ว');
 
 -- --------------------------------------------------------
 
@@ -193,16 +158,15 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`product_id`, `product_name`, `description`, `price`, `image`, `stock`, `created_at`) VALUES
-(7, 'เครื่องคอมพิวเตอร์ PC', 'เครื่องคอมพิวเตอร์ PC Acer2400', 28000.00, '1757489972_p2.webp', 21, '2025-09-10 07:39:32'),
-(8, 'หนังสือ AutoCAD', 'หนังสือวาดแบบ AutoCAD', 280.00, '1757561799_eq_637248bad2b6e.jpg', 20, '2025-09-11 03:36:39'),
-(9, 'หมูเนื้อแดงรวมผัก', 'ชุด 1 หมูเนื้อแดงรวมผักสด', 250.00, '1758077855_p5.jpg', 50, '2025-09-17 02:57:35'),
-(10, 'ชุด 2 ลูกชิ้น + หมูสามชั้น', 'ชุด 2 ลูกชิ้น + หมูสามชั้น', 199.00, '1758077915_p6.jpg', 20, '2025-09-17 02:58:35'),
-(11, 'สันคอหมูรวมผัก', 'ชุด 3 สันคอหมูรวมผัก', 220.00, '1758077984_p7.jpg', 20, '2025-09-17 02:59:44'),
-(12, 'การพัฒนาเว็บด้วย HTML', 'หนังสือสอนการพัฒนาเว็บไซต์ด้วย HTML', 299.00, '1758082138_eq_630ccad48e57c.jpg', 20, '2025-09-17 04:08:58'),
-(13, 'ชาบูน้ำดำ หมู ผักสด', 'ชุด 5 ชาบูน้ำดำ หมู ผักสด', 250.00, '1758082507_p3.jpg', 20, '2025-09-17 04:15:07'),
-(14, 'ชุดรวมมิตรชาบู', 'รวมมิตร หมู ลูกชิ้น ผักสด', 299.00, '1758180812_p1.jpg', 20, '2025-09-18 07:33:32'),
-(15, 'Galaxy Note', 'หนังสือสอนใช้งาน Galaxy Note', 250.00, '1758181345_eq_630ccb3cc1614.jpg', 20, '2025-09-18 07:42:25'),
-(17, 'ออกแบบเว็บด้วย HTML', 'หนังสือเขียนโปรแกรมด้วย HTML', 299.00, '1760498309_eq_630ccad48e57c.jpg', 25, '2025-10-15 03:18:12');
+(8, 'ชุดผักรวม ชื่นใจ', 'ชุดผักรวมและหมู ชื่นใจ', 280.00, '1761182155_1761180238_3.jfif', 20, '2025-09-11 03:36:39'),
+(9, 'หมูเนื้อแดงรวมผัก', 'ชุด 1 หมูเนื้อแดงรวมผักสด', 250.00, '1761182114_1758077855_p5.jpg', 50, '2025-09-17 02:57:35'),
+(10, 'ชุด 2 ลูกชิ้น + หมูสามชั้น', 'ชุด 2 ลูกชิ้น + หมูสามชั้น', 199.00, '1761182102_1760498908_p6.jpg', 20, '2025-09-17 02:58:35'),
+(11, 'สันคอหมูรวมผัก', 'ชุด 3 สันคอหมูรวมผัก', 220.00, '1761182089_1760589547_p1.jpg', 20, '2025-09-17 02:59:44'),
+(12, 'ชุดรวมมิตร MK', 'ชุดรวมมิตร MK ฉ่ำ ๆ', 299.00, '1761182063_3.jfif', 20, '2025-09-17 04:08:58'),
+(13, 'ชาบูน้ำดำ หมู ผักสด', 'ชุด 5 ชาบูน้ำดำ หมู ผักสด', 250.00, '1761182047_1761180305_2.jfif', 20, '2025-09-17 04:15:07'),
+(14, 'ชุดรวมมิตรชาบู', 'รวมมิตร หมู ลูกชิ้น ผักสด', 299.00, '1761182034_1758077915_p6.jpg', 20, '2025-09-18 07:33:32'),
+(15, 'สันคอหมูล้วน', 'สันคอหมูล้วน เกาหลี', 220.00, '1761182020_7.jfif', 20, '2025-09-18 07:42:25'),
+(17, 'ชุดรวมหมู่ชาบู', 'ชุดรวมหมู่ชาบู หมูเนื้อแดง ผักรวม', 299.00, '1761182011_1760511137_p7.jpg', 30, '2025-10-15 03:18:12');
 
 --
 -- Indexes for dumped tables
@@ -214,12 +178,6 @@ INSERT INTO `products` (`product_id`, `product_name`, `description`, `price`, `i
 ALTER TABLE `admin`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `username` (`username`);
-
---
--- Indexes for table `customers`
---
-ALTER TABLE `customers`
-  ADD PRIMARY KEY (`customer_id`);
 
 --
 -- Indexes for table `orders`
@@ -234,12 +192,6 @@ ALTER TABLE `order_items`
   ADD PRIMARY KEY (`id`),
   ADD KEY `order_id` (`order_id`),
   ADD KEY `product_id` (`product_id`);
-
---
--- Indexes for table `payments`
---
-ALTER TABLE `payments`
-  ADD PRIMARY KEY (`payment_id`);
 
 --
 -- Indexes for table `products`
@@ -258,34 +210,22 @@ ALTER TABLE `admin`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT for table `customers`
---
-ALTER TABLE `customers`
-  MODIFY `customer_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
-
---
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT for table `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
-
---
--- AUTO_INCREMENT for table `payments`
---
-ALTER TABLE `payments`
-  MODIFY `payment_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=70;
 
 --
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- Constraints for dumped tables
