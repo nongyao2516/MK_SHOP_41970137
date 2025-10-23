@@ -33,7 +33,7 @@
   <a class="nav-link" href="/report">Report</a>
 </li>
             <li class="nav-item">
-              <a class="nav-link text-danger" href="/" @click="logout">Logout</a>
+              <a class="nav-link text-danger" href="#" @click="logout">Logout</a>
             </li>
           </template>
 

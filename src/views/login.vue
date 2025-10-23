@@ -40,7 +40,7 @@ export default {
 
         if (res.data.success) {
           localStorage.setItem("adminLogin", "true");
-          this.$router.push("/orders");
+          this.$router.push("/show_orders");
         } else {
           this.error = res.data.message;
         }
