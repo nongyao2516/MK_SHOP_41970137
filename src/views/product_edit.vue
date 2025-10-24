@@ -22,6 +22,7 @@
         <tr>
           <th>ID</th>
           <th>ชื่อสินค้า</th>
+          <th>ประเภทสินค้า</th>
           <th>รายละเอียด</th>
           <th>ราคา</th>
           <th>จำนวน</th>
@@ -33,6 +34,7 @@
         <tr v-for="product in paginatedProducts" :key="product.product_id">
           <td>{{ product.product_id }}</td>
           <td>{{ product.product_name }}</td>
+          <td>{{ product.type_name || '-' }}</td>
           <td>{{ product.description }}</td>
           <td>{{ product.price }}</td>
           <td>{{ product.stock }}</td>
@@ -94,14 +96,27 @@
                 <label class="form-label">ชื่อสินค้า</label>
                 <input v-model="editForm.product_name" type="text" class="form-control" required />
               </div>
+
+              <div class="mb-3">
+                <label class="form-label">ประเภทสินค้า</label>
+                <select v-model="editForm.type_id" class="form-select" required>
+                  <option disabled value="">-- เลือกประเภทสินค้า --</option>
+                  <option v-for="t in productTypes" :key="t.type_id" :value="t.type_id">
+                    {{ t.type_name }}
+                  </option>
+                </select>
+              </div>
+
               <div class="mb-3">
                 <label class="form-label">รายละเอียด</label>
                 <textarea v-model="editForm.description" class="form-control"></textarea>
               </div>
+
               <div class="mb-3">
                 <label class="form-label">ราคา</label>
                 <input v-model="editForm.price" type="number" step="0.01" class="form-control" required />
               </div>
+
               <div class="mb-3">
                 <label class="form-label">จำนวน</label>
                 <input v-model="editForm.stock" type="number" class="form-control" required />
@@ -142,12 +157,15 @@ export default {
   name: "ProductList",
   setup() {
     const products = ref([]);
+    const productTypes = ref([]);
     const loading = ref(true);
     const error = ref(null);
     const isEditMode = ref(false);
+
     const editForm = ref({
       product_id: null,
       product_name: "",
+      type_id: "",
       description: "",
       price: "",
       stock: "",
@@ -158,7 +176,7 @@ export default {
 
     // ✅ Pagination
     const currentPage = ref(1);
-    const itemsPerPage = ref(5); // ค่าเริ่มต้น 5 แถวต่อหน้า
+    const itemsPerPage = ref(5);
 
     const totalPages = computed(() =>
       Math.ceil(products.value.length / itemsPerPage.value)
@@ -169,24 +187,16 @@ export default {
       return products.value.slice(start, start + itemsPerPage.value);
     });
 
-    const goToPage = (page) => {
-      currentPage.value = page;
-    };
-
+    const goToPage = (page) => (currentPage.value = page);
     const nextPage = () => {
       if (currentPage.value < totalPages.value) currentPage.value++;
     };
-
     const prevPage = () => {
       if (currentPage.value > 1) currentPage.value--;
     };
+    watch(itemsPerPage, () => (currentPage.value = 1));
 
-    // 🧩 รีเซ็ตหน้ากลับไปหน้า 1 เมื่อเปลี่ยนจำนวนแถวต่อหน้า
-    watch(itemsPerPage, () => {
-      currentPage.value = 1;
-    });
-
-    // โหลดข้อมูล
+    // ✅ โหลดข้อมูลสินค้า + ประเภท
     const fetchProducts = async () => {
       try {
         const res = await fetch("http://localhost/MK_SHOP/php_api/api_product.php");
@@ -199,11 +209,22 @@ export default {
       }
     };
 
+    const fetchProductTypes = async () => {
+      try {
+        const res = await fetch("http://localhost/MK_SHOP/php_api/api_product_type.php");
+        const data = await res.json();
+        productTypes.value = data.success ? data.data : [];
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
     const openAddModal = () => {
       isEditMode.value = false;
       editForm.value = {
         product_id: null,
         product_name: "",
+        type_id: "",
         description: "",
         price: "",
         stock: "",
@@ -213,8 +234,7 @@ export default {
       const modalEl = document.getElementById("editModal");
       modalInstance = new window.bootstrap.Modal(modalEl);
       modalInstance.show();
-      const fileInput = modalEl.querySelector('input[type="file"]');
-      if (fileInput) fileInput.value = "";
+      modalEl.querySelector('input[type="file"]').value = "";
     };
 
     const openEditModal = (product) => {
@@ -235,6 +255,7 @@ export default {
       formData.append("action", isEditMode.value ? "update" : "add");
       if (isEditMode.value) formData.append("product_id", editForm.value.product_id);
       formData.append("product_name", editForm.value.product_name);
+      formData.append("type_id", editForm.value.type_id);
       formData.append("description", editForm.value.description);
       formData.append("price", editForm.value.price);
       formData.append("stock", editForm.value.stock);
@@ -246,12 +267,10 @@ export default {
           body: formData
         });
         const result = await res.json();
-        if (result.message) {
-          alert(result.message);
+        alert(result.message || result.error);
+        if (result.success) {
           fetchProducts();
           modalInstance.hide();
-        } else if (result.error) {
-          alert(result.error);
         }
       } catch (err) {
         alert(err.message);
@@ -271,21 +290,21 @@ export default {
           body: formData
         });
         const result = await res.json();
-        if (result.message) {
-          alert(result.message);
-          fetchProducts();
-        } else if (result.error) {
-          alert(result.error);
-        }
+        alert(result.message || result.error);
+        if (result.success) fetchProducts();
       } catch (err) {
         alert(err.message);
       }
     };
 
-    onMounted(fetchProducts);
+    onMounted(() => {
+      fetchProducts();
+      fetchProductTypes();
+    });
 
     return {
       products,
+      productTypes,
       loading,
       error,
       editForm,
@@ -295,8 +314,6 @@ export default {
       handleFileUpload,
       saveProduct,
       deleteProduct,
-
-      // ✅ Pagination
       currentPage,
       totalPages,
       paginatedProducts,
